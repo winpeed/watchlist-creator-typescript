@@ -1,0 +1,271 @@
+html,
+body {
+  font-family: "Inter", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  --font-family: "Inter", sans-serif;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light-gray: #f9fafb;
+  --color-dark-gray: #6b7280;
+  --color-border-gray: #d1d5db;
+  --color-text-black: #374151;
+  --color-text-gray: #dfdddd;
+  --color-text-dark-black: #111827;
+}
+
+html [data-theme="light"] {
+  --color-white: #ffffff;
+}
+
+html [data-theme="dark"] {
+  --color-white: #ffffff;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+section,
+span {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-black);
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.top {
+  background: url("/bg-img.jpg");
+  background-blend-mode: color;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 5em 1em;
+  color: var(--color-white);
+
+  div {
+    margin: 0 auto;
+    max-width: 450px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 {
+    font-size: 3.1rem;
+    letter-spacing: -0.045em;
+    font-weight: 800;
+  }
+
+  p {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .top h1 {
+    font-size: 2.4rem;
+  }
+}
+
+.bottom {
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 65vh;
+  position: relative;
+  padding: 2em 0em;
+}
+
+.input-wrapper {
+  position: absolute;
+  border-radius: 6px;
+  padding: 0em 0em 0em 1em;
+  width: 420px;
+  background: var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--color-border-gray);
+  top: -1.2em;
+
+  img {
+    flex: 0 0 4%;
+  }
+
+  input {
+    outline: none;
+    border: none;
+    flex: 0 0 65%;
+    padding-left: 0.5em;
+    font-family: var(--font-family);
+  }
+  input::placeholder {
+    font-family: var(--font-family);
+    color: var(--color-dark-gray);
+    font-weight: 500;
+  }
+
+  button {
+    padding: 0.6em 2em;
+    flex: 0 0 15%;
+    border: none;
+    border-left: 1px solid var(--color-border-gray);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background: var(--color-light-gray);
+    color: var(--color-text-black);
+    font-weight: 600;
+  }
+}
+
+.explore {
+  padding: 3em 0em;
+}
+
+.text-explore {
+  color: var(--color-text-gray);
+  padding: 0.5em 0em;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 27% 7% 62% 4%;
+  grid-template-rows: 4% 20% 20% 40% 4%;
+  max-width: 420px;
+  padding: 0em 1em;
+
+  div {
+    display: flex;
+    align-items: center;
+    grid-column: 3 / 4;
+    font-size: 0.9rem;
+  }
+
+  .first {
+    grid-row: 2/3;
+  }
+
+  .second {
+    grid-row: 3/4;
+  }
+
+  .desc {
+    grid-column: 3 / 4;
+    grid-row: 4/5;
+    font-size: 0.85rem;
+    line-height: 20px;
+    color: var(--color-dark-gray);
+    padding-top: 0.5em;
+  }
+
+  hr {
+    grid-column: 1 / -1;
+    grid-row: 6;
+    width: 100%;
+    height: 0;
+    margin-top: 1.5em;
+  }
+}
+
+.card span:nth-child(1) {
+  grid-column: 1 / 2;
+  grid-row: 1 / 5;
+  margin: 0em 0.5em 0em 0.7em;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.category {
+  margin: 0em 0.8em;
+}
+
+.first p,
+.second p {
+  font-size: 0.75rem;
+  color: var(--color-text-dark-black);
+  font-weight: 600;
+}
+
+.watchlist {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+#search-button {
+  cursor: pointer;
+}
+
+.first {
+  span {
+    margin: 0em 0.5em 0em 0.5em !important;
+  }
+}
+
+.watchlist {
+  span {
+    margin: 0em 0.2em 0em 0.2em !important;
+  }
+}
+
+.second {
+  padding: 2em 0em;
+}
+
+.card h2 {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 450px) {
+  .input-wrapper {
+    width: 310px;
+
+    input {
+      flex: 0 0 50%;
+    }
+    button {
+      flex: 0 0 10%;
+    }
+  }
+
+  .bottom p {
+    font-size: 0.85rem;
+  }
+
+  .category {
+    margin: 0em 1em;
+  }
+}
