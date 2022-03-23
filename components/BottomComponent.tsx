@@ -123,7 +123,10 @@ export default function BottomComponent({ dataKey }: KeyProps) {
         </div>
       ) : isLoading ? (
         allItems.map((item) => (
-          <ResultLoader key={item} style={{ margin: "1em 0em" }} />
+          <ResultLoader
+            key={item}
+            style={{ margin: "1em 0em", padding: "0em 2em" }}
+          />
         ))
       ) : (
         movies.map((result: MovieData, index: number) => (
