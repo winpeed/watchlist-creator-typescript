@@ -1,8 +1,12 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import HomeContainer from "../containers/HomeContainer";
+import { GetStaticProps } from "next";
 
-const Home: NextPage = () => {
+export type KeyProps = {
+  dataKey: string;
+};
+
+const Home = ({ dataKey }: KeyProps) => {
   return (
     <div>
       <Head>
@@ -12,9 +16,17 @@ const Home: NextPage = () => {
           content="A watchlist creator app built with TypeScript"
         />
       </Head>
-      <HomeContainer />
+      <HomeContainer dataKey={dataKey} />
     </div>
   );
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      dataKey: process.env.API_KEY,
+    },
+  };
+};

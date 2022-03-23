@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ResultLoader from "./ResultLoader";
+import { KeyProps } from "../pages";
 import MovieComponent from "./MovieComponent";
 
 interface Movies {
@@ -44,7 +45,7 @@ interface Rating {
   Value: string;
 }
 
-export default function BottomComponent() {
+export default function BottomComponent({ dataKey }: KeyProps) {
   const [movies, setMovies] = useState<null | MovieData[]>(null);
   const [searchText, setSearchText] = useState<string | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -52,7 +53,7 @@ export default function BottomComponent() {
 
   async function getMovies() {
     const response = await fetch(
-      `https://www.omdbapi.com/?apikey=b1015377&s=${searchText}`
+      `https://www.omdbapi.com/?apikey=${dataKey}&s=${searchText}`
     );
     const data = await response.json();
     return data.Search.map((result: Movies) => result.imdbID);
@@ -63,7 +64,7 @@ export default function BottomComponent() {
 
     const movieDetails = idMovie.map(async (id: string) => {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=b1015377&i=${id}`
+        `https://www.omdbapi.com/?apikey=${dataKey}&i=${id}`
       );
       const data = await response.json();
       return data;
