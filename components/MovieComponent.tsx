@@ -1,17 +1,20 @@
 import Image from "next/image";
 import React from "react";
+import { MovieData } from "./BottomComponent";
 
-type Props = {};
+type DataProps = {
+  data: MovieData;
+};
 
-export default function MovieComponent({ data }: Props) {
+export default function MovieComponent({ data }: DataProps) {
   const { Title, Poster, Genre, Runtime, imdbRating, Plot } = data;
   return (
     <div className="card">
       <Image
         src={`${Poster}`}
         alt={`${Title}`}
-        width={40}
-        height={120}
+        width={1920}
+        height={1080}
         objectFit="contain"
       />
       <div className="first">

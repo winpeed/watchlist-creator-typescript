@@ -1,11 +1,50 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MovieComponent from "./MovieComponent";
 
-type Props = {};
+interface Movies {
+  Title: string;
+  Year: string;
+  imdbID: string;
+  Type: string;
+  Poster: string;
+}
 
-export default function BottomComponent({}: Props) {
-  const [movies, setMovies] = useState<null | []>(null);
+export interface MovieData {
+  Title: string;
+  Year: string;
+  Rated: string;
+  Released: string;
+  Runtime: string;
+  Genre: string;
+  Director: string;
+  Writer: string;
+  Actors: string;
+  Plot: string;
+  Language: string;
+  Country: string;
+  Awards: string;
+  Poster: string;
+  Ratings: Rating[];
+  Metascore: string;
+  imdbRating: string;
+  imdbVotes: string;
+  imdbID: string;
+  Type: string;
+  DVD: string;
+  BoxOffice: string;
+  Production: string;
+  Website: string;
+  Response: string;
+}
+
+interface Rating {
+  Source: string;
+  Value: string;
+}
+
+export default function BottomComponent() {
+  const [movies, setMovies] = useState<null | MovieData[]>(null);
   const [searchText, setSearchText] = useState<string | "">("");
 
   async function getMovies() {
@@ -13,13 +52,13 @@ export default function BottomComponent({}: Props) {
       `https://www.omdbapi.com/?apikey=b1015377&s=${searchText}`
     );
     const data = await response.json();
-    return data.Search.map((result) => result.imdbID);
+    return data.Search.map((result: Movies) => result.imdbID);
   }
 
   async function fetchMovieDetails() {
     const idMovie = await getMovies();
 
-    const movieDetails = idMovie.map(async (id) => {
+    const movieDetails = idMovie.map(async (id: string) => {
       const response = await fetch(
         `https://www.omdbapi.com/?apikey=b1015377&i=${id}`
       );
@@ -31,40 +70,46 @@ export default function BottomComponent({}: Props) {
 
   async function setAllMovies() {
     const results = await fetchMovieDetails();
-    Promise.all(results).then((data) => {
-      console.log(data);
+    Promise.all(results).then((data: MovieData[]) => {
       setMovies(data);
     });
+  }
+
+  function handleSubmit(e: any) {
+    e.preventDefault();
+    setAllMovies();
   }
 
   return (
     <section className="bottom">
       <div className="input-wrapper">
         <Image src="/search.svg" alt="Search Icon" width={20} height={20} />
-        <input
-          type="text"
-          placeholder="Search for a movie"
-          id="search-text"
-          value={searchText}
-          onChange={({ target }) => setSearchText(target.value)}
-        />
-        <button id="search-button" onClick={setAllMovies}>
-          Search
-        </button>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Search for a movie"
+            id="search-text"
+            value={searchText}
+            onChange={({ target }) => setSearchText(target.value)}
+          />
+          <button id="search-button">Search</button>
+        </form>
       </div>
 
       {!movies ? (
         <div className="explore">
-          <Image
-            src="/start.svg"
-            alt="Start Exploring"
-            width={200}
-            height={200}
-          />
+          <div style={{ width: "200px", height: "200px" }}>
+            <Image
+              src="/start.svg"
+              alt="Start Exploring"
+              width={1920}
+              height={1080}
+            />
+          </div>
           <p className="text-explore">Start exploring</p>
         </div>
       ) : (
-        movies.map((result) => (
+        movies.map((result: MovieData) => (
           <MovieComponent key={result.Title} data={result} />
         ))
       )}

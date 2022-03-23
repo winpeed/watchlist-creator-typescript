@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-export default function TopComponent({}: Props) {
+export default function TopComponent() {
   return (
     <section className="top">
       <div>
