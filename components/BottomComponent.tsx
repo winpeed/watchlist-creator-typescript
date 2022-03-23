@@ -1,5 +1,6 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import ResultLoader from "./ResultLoader";
 import MovieComponent from "./MovieComponent";
 
 interface Movies {
@@ -46,6 +47,8 @@ interface Rating {
 export default function BottomComponent() {
   const [movies, setMovies] = useState<null | MovieData[]>(null);
   const [searchText, setSearchText] = useState<string | "">("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [allItems, setAllItems] = useState<string[]>(["1", "2", "3"]);
 
   async function getMovies() {
     const response = await fetch(
@@ -77,24 +80,33 @@ export default function BottomComponent() {
 
   function handleSubmit(e: any) {
     e.preventDefault();
+    setIsLoading(true);
     setAllMovies();
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [movies]);
+
   return (
     <section className="bottom">
-      <div className="input-wrapper">
+      <form onSubmit={handleSubmit} className="input-wrapper">
         <Image src="/search.svg" alt="Search Icon" width={20} height={20} />
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Search for a movie"
-            id="search-text"
-            value={searchText}
-            onChange={({ target }) => setSearchText(target.value)}
-          />
-          <button id="search-button">Search</button>
-        </form>
-      </div>
+        <input
+          type="text"
+          placeholder="Search for a movie"
+          id="search-text"
+          value={searchText}
+          onChange={({ target }) => setSearchText(target.value)}
+        />
+        <button id="search-button">Search</button>
+      </form>
 
       {!movies ? (
         <div className="explore">
@@ -108,9 +120,13 @@ export default function BottomComponent() {
           </div>
           <p className="text-explore">Start exploring</p>
         </div>
+      ) : isLoading ? (
+        allItems.map((item) => (
+          <ResultLoader key={item} style={{ margin: "1em 0em" }} />
+        ))
       ) : (
-        movies.map((result: MovieData) => (
-          <MovieComponent key={result.Title} data={result} />
+        movies.map((result: MovieData, index: number) => (
+          <MovieComponent key={index} data={result} />
         ))
       )}
     </section>
