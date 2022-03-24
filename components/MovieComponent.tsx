@@ -6,7 +6,13 @@ type DataProps = {
   data: MovieData;
 };
 
-export default function MovieComponent({ data, movieArr }) {
+export default function MovieComponent({
+  data,
+  movieArr,
+}: {
+  data: any;
+  movieArr: any;
+}) {
   const { imdbID, Title, Poster, Genre, Runtime, imdbRating, Plot } = data;
 
   const [newList, setNewList] = useState<{ data: MovieData }[]>([]);
