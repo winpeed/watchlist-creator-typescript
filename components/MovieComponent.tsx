@@ -1,13 +1,22 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { MovieData } from "./BottomComponent";
 
 type DataProps = {
   data: MovieData;
 };
 
-export default function MovieComponent({ data }: DataProps) {
-  const { Title, Poster, Genre, Runtime, imdbRating, Plot } = data;
+export default function MovieComponent({ data, movieArr }) {
+  const { imdbID, Title, Poster, Genre, Runtime, imdbRating, Plot } = data;
+
+  const [newList, setNewList] = useState<{ data: MovieData }[]>([]);
+
+  function handleList(id: string) {
+    const newItem = movieArr.filter((movie: MovieData) => id == movie.imdbID);
+    console.log(newItem);
+    setNewList((prevList) => [...prevList, newItem]);
+    console.log(newList);
+  }
   return (
     <div className="card">
       <Image
@@ -26,7 +35,12 @@ export default function MovieComponent({ data }: DataProps) {
       <div className="second">
         <p>{Runtime}</p>
         <p className="category">{Genre}</p>
-        <p className="watchlist">
+        <p
+          className="watchlist"
+          onClick={() => {
+            handleList(imdbID);
+          }}
+        >
           <Image src="/add-icon.svg" alt="Add Icon" width={20} height={20} />
           <span>Watchlist</span>
         </p>

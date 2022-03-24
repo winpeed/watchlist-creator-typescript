@@ -130,7 +130,7 @@ export default function BottomComponent({ dataKey }: KeyProps) {
         ))
       ) : (
         movies.map((result: MovieData, index: number) => (
-          <MovieComponent key={index} data={result} />
+          <MovieComponent key={index} data={result} movieArr={movies} />
         ))
       )}
     </section>
