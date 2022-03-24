@@ -3,6 +3,7 @@ import ContentLoader from "react-content-loader";
 
 const ResultLoader = (props: any) => (
   <ContentLoader
+    style={{ maxWidth: "91%", margin: "0em auto", display: "flex" }}
     speed={2}
     width={400}
     height={160}
