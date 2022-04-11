@@ -6,12 +6,12 @@ type DataProps = {
   data: MovieData;
 };
 
-export default function MovieComponent({
+export default function MovieWatchlist({
   data,
-  handleProps,
+  removeProps,
 }: {
   data: any;
-  handleProps: any;
+  removeProps: any;
 }) {
   const { imdbID, Title, Poster, Genre, Runtime, imdbRating, Plot } = data;
 
@@ -33,9 +33,9 @@ export default function MovieComponent({
       <div className="second">
         <p>{Runtime}</p>
         <p className="category">{Genre}</p>
-        <p className="watchlist" onClick={() => handleProps(imdbID)}>
+        <p className="watchlist" onClick={() => removeProps(imdbID)}>
           <Image src="/add-icon.svg" alt="Add Icon" width={20} height={20} />
-          <span>Watchlist</span>
+          <span>Remove</span>
         </p>
       </div>
 

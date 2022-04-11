@@ -46,7 +46,7 @@ interface Rating {
 }
 
 export default function BottomComponent({ dataKey }: KeyProps) {
-  const [movies, setMovies] = useState<null | MovieData[]>(null);
+  const [movies, setMovies] = useState<MovieData[]>([]);
   const [searchText, setSearchText] = useState<string | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [allItems, setAllItems] = useState<string[]>(["1", "2", "3"]);
@@ -95,44 +95,62 @@ export default function BottomComponent({ dataKey }: KeyProps) {
     };
   }, [movies]);
 
-  return (
-    <section className="bottom">
-      <form onSubmit={handleSubmit} className="input-wrapper">
-        <Image src="/search.svg" alt="Search Icon" width={20} height={20} />
-        <input
-          type="text"
-          placeholder="Search for a movie"
-          id="search-text"
-          value={searchText}
-          onChange={({ target }) => setSearchText(target.value)}
-        />
-        <button id="search-button">Search</button>
-      </form>
+  const [newList, setNewList] = useState([]);
 
-      {!movies ? (
-        <div className="explore">
-          <div style={{ width: "200px", height: "200px" }}>
-            <Image
-              src="/start.svg"
-              alt="Start Exploring"
-              width={1920}
-              height={1080}
-            />
-          </div>
-          <p className="text-explore">Start exploring</p>
-        </div>
-      ) : isLoading ? (
-        allItems.map((item) => (
-          <ResultLoader
-            key={item}
-            style={{ margin: "1em 0em", padding: "0em 2em" }}
+  function handleList(id: string) {
+    console.log(id);
+    const initArray = [...movies];
+    const newItem = initArray.find((movie: MovieData) => id == movie.imdbID);
+    setNewList((prevState) => {
+      return [...prevState, newItem];
+    });
+    localStorage.setItem("watchlist", JSON.stringify(newList));
+  }
+
+  return (
+    <>
+      <section className="bottom">
+        <form onSubmit={handleSubmit} className="input-wrapper">
+          <Image src="/search.svg" alt="Search Icon" width={20} height={20} />
+          <input
+            type="text"
+            placeholder="Search for a movie"
+            id="search-text"
+            value={searchText}
+            onChange={({ target }) => setSearchText(target.value)}
           />
-        ))
-      ) : (
-        movies.map((result: MovieData, index: number) => (
-          <MovieComponent key={index} data={result} movieArr={movies} />
-        ))
-      )}
-    </section>
+          <button id="search-button">Search</button>
+        </form>
+
+        {!movies ? (
+          <div className="explore">
+            <div style={{ width: "200px", height: "200px" }}>
+              <Image
+                src="/start.svg"
+                alt="Start Exploring"
+                width={1920}
+                height={1080}
+              />
+            </div>
+            <p className="text-explore">Start exploring</p>
+          </div>
+        ) : isLoading ? (
+          allItems.map((item) => (
+            <ResultLoader
+              key={item}
+              style={{ margin: "1em 0em", padding: "0em 2em" }}
+            />
+          ))
+        ) : (
+          movies.map((result: MovieData, index: number) => (
+            <MovieComponent
+              key={index}
+              data={result}
+              handleProps={() => handleList(result.imdbID)}
+            />
+          ))
+        )}
+      </section>
+    </>
   );
 }

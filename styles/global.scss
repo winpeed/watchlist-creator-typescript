@@ -249,6 +249,10 @@ body {
   font-size: 1.2rem;
 }
 
+.watchlist-link{
+  cursor: pointer;
+}
+
 @media (max-width: 450px) {
   .input-wrapper {
     width: 310px;
