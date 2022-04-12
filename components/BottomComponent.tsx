@@ -88,23 +88,28 @@ export default function BottomComponent({ dataKey }: KeyProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
     };
   }, [movies]);
 
-  const [newList, setNewList] = useState([]);
+  const [newList, setNewList] = useState<MovieData[]>([]);
 
   function handleList(id: string) {
-    console.log(id);
     const initArray = [...movies];
-    const newItem = initArray.find((movie: MovieData) => id == movie.imdbID);
-    setNewList((prevState) => {
-      return [...prevState, newItem];
-    });
-    localStorage.setItem("watchlist", JSON.stringify(newList));
+    const newItem = initArray.filter((movie: MovieData) => id == movie.imdbID);
+
+    setNewList((prev) => [...prev, ...newItem]);
+
+    const uniqueList = [...new Set([...newList])];
+    localStorage.setItem("watchlist", JSON.stringify(uniqueList));
+
+    console.log(
+      "newlocalArray",
+      JSON.parse(localStorage.getItem("watchlist")!)
+    );
   }
 
   return (

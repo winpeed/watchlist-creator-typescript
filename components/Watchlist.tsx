@@ -44,10 +44,8 @@ interface Rating {
   Value: string;
 }
 
-function Watchlist() {
-  const [watchList, setWatchList] = useState(
-    JSON.parse(localStorage.getItem("watchlist")!)
-  );
+function Watchlist({ toggleWatch, watch }) {
+  const [watchList, setWatchList] = useState([]);
 
   useEffect(() => {
     setWatchList(JSON.parse(localStorage.getItem("watchlist")!));
@@ -59,27 +57,35 @@ function Watchlist() {
       (movie: MovieData) => id !== movie.imdbID
     );
     setWatchList(finalArray);
+    localStorage.setItem("watchlist", JSON.stringify(finalArray));
   }
   return (
     <>
       <section className="bottom">
-        {watchList.length == 0 ? (
+        {watchList.length == 0 || watchList == null ? (
           <div className="explore">
-            <div style={{ width: "200px", height: "200px" }}></div>
-            <p className="text-explore">
-              Your watchlist is looking a little empty
-            </p>
-            <Link href="/watchlist" passHref>
-              <>
+            <div className="wrapper">
+              <p className="text-explore">
+                Your watchlist is looking a little empty
+              </p>
+
+              <p className="span-holder">
                 <Image
                   src="/add-icon.svg"
                   alt="Add Icon"
                   width={20}
                   height={20}
                 />
-                Lets add some movies!
-              </>
-            </Link>
+                <span
+                  onClick={(event) => {
+                    event.preventDefault();
+                    toggleWatch(!watch);
+                  }}
+                >
+                  Lets add some movies!
+                </span>
+              </p>
+            </div>
           </div>
         ) : (
           watchList.map((result: MovieData, index: number) => (

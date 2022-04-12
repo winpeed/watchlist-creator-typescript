@@ -28,7 +28,14 @@ export default function HomeContainer({ dataKey }: KeyProps) {
           )}
         </div>
       </section>
-      {isWatchList ? <Watchlist /> : <BottomComponent dataKey={dataKey} />}
+      {isWatchList ? (
+        <Watchlist
+          toggleWatch={() => setIsWatchList(!isWatchList)}
+          watch={isWatchList}
+        />
+      ) : (
+        <BottomComponent dataKey={dataKey} />
+      )}
     </>
   );
 }

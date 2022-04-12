@@ -154,6 +154,23 @@ body {
 .explore {
   padding: 3em 0em;
 }
+.explore .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.explore .wrapper .span-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.explore .wrapper .span-holder span {
+  margin-left: 1.2em;
+  display: inline-block;
+  cursor: pointer;
+}
 
 .text-explore {
   color: var(--color-text-gray);
