@@ -44,7 +44,7 @@ interface Rating {
   Value: string;
 }
 
-function Watchlist({ toggleWatch, watch }) {
+function Watchlist() {
   const [watchList, setWatchList] = useState([]);
 
   useEffect(() => {
@@ -76,14 +76,7 @@ function Watchlist({ toggleWatch, watch }) {
                   width={20}
                   height={20}
                 />
-                <span
-                  onClick={(event) => {
-                    event.preventDefault();
-                    toggleWatch(!watch);
-                  }}
-                >
-                  Lets add some movies!
-                </span>
+                <span>Lets add some movies!</span>
               </p>
             </div>
           </div>

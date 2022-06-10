@@ -48,51 +48,58 @@ interface Rating {
 export default function BottomComponent({ dataKey }: KeyProps) {
   const [movies, setMovies] = useState<MovieData[]>([]);
   const [searchText, setSearchText] = useState<string | "">("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allItems, setAllItems] = useState<string[]>(["1", "2", "3"]);
 
   async function getMovies() {
-    const response = await fetch(
-      `https://www.omdbapi.com/?apikey=${dataKey}&s=${searchText}`
-    );
-    const data = await response.json();
-    return data.Search.map((result: Movies) => result.imdbID);
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://www.omdbapi.com/?apikey=${dataKey}&s=${searchText}`
+      );
+      const data = await response.json();
+      return data.Search.map((result: Movies) => result.imdbID);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function fetchMovieDetails() {
-    const idMovie = await getMovies();
+    try {
+      const idMovie = await getMovies();
 
-    const movieDetails = idMovie.map(async (id: string) => {
-      const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${dataKey}&i=${id}`
-      );
-      const data = await response.json();
-      return data;
-    });
-    return movieDetails;
+      const movieDetails = idMovie.map(async (id: string) => {
+        const response = await fetch(
+          `https://www.omdbapi.com/?apikey=${dataKey}&i=${id}`
+        );
+        const data = await response.json();
+        return data;
+      });
+      return movieDetails;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async function setAllMovies() {
-    const results = await fetchMovieDetails();
-    Promise.all(results).then((data: MovieData[]) => {
-      setMovies(data);
-    });
+    try {
+      const results = await fetchMovieDetails();
+      Promise.all(results).then((data: MovieData[]) => {
+        setMovies(data);
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    setIsLoading(true);
     setAllMovies();
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => {
-      clearTimeout(timer);
-    };
+    console.log("movies", movies);
   }, [movies]);
 
   const [newList, setNewList] = useState<MovieData[]>([]);
@@ -105,11 +112,6 @@ export default function BottomComponent({ dataKey }: KeyProps) {
 
     const uniqueList = [...new Set([...newList])];
     localStorage.setItem("watchlist", JSON.stringify(uniqueList));
-
-    console.log(
-      "newlocalArray",
-      JSON.parse(localStorage.getItem("watchlist")!)
-    );
   }
 
   return (

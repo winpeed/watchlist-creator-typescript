@@ -17,13 +17,16 @@ export default function MovieComponent({
 
   return (
     <div className="card">
-      <Image
-        src={`${Poster}`}
-        alt={`${Title}`}
-        width={1920}
-        height={1080}
-        objectFit="contain"
-      />
+      {Poster !== "N/A" && (
+        <Image
+          src={`${Poster}`}
+          alt={`${Title}`}
+          width={1920}
+          height={1080}
+          objectFit="contain"
+        />
+      )}
+
       <div className="first">
         <h2>{Title}</h2>
         <Image src="/star.svg" alt="Star Image" width={20} height={20} />
