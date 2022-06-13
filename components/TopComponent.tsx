@@ -1,14 +1,18 @@
 import React from "react";
 import Link from "next/link";
 
-type Props = {};
+type TopCompProps = {
+  headerText: string;
+  linkText: string;
+  url: string;
+};
 
-const TopComponent = (props: Props) => {
+const TopComponent = ({ headerText, linkText, url }: TopCompProps) => {
   return (
     <section className="top">
       <div>
-        <h1>Find your film</h1>
-        <Link href="/watchlist">My Watchlist</Link>
+        <h1>{headerText}</h1>
+        <Link href={`/${url}`}>{linkText}</Link>
       </div>
     </section>
   );

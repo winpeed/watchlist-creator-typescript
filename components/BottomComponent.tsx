@@ -45,11 +45,17 @@ interface Rating {
   Value: string;
 }
 
+const ISSERVER = typeof window === "undefined";
+
 export default function BottomComponent({ dataKey }: KeyProps) {
   const [movies, setMovies] = useState<MovieData[]>([]);
   const [searchText, setSearchText] = useState<string | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allItems, setAllItems] = useState<string[]>(["1", "2", "3"]);
+  const [newList, setNewList] = useState(
+    (!ISSERVER && JSON.parse(localStorage.getItem("watchlist")!)) || []
+  );
+  const [uniqueList, setUniqueList] = useState<MovieData[]>([]);
 
   async function getMovies() {
     setIsLoading(true);
@@ -99,19 +105,14 @@ export default function BottomComponent({ dataKey }: KeyProps) {
   }
 
   useEffect(() => {
-    console.log("movies", movies);
-  }, [movies]);
-
-  const [newList, setNewList] = useState<MovieData[]>([]);
-
-  function handleList(id: string) {
-    const initArray = [...movies];
-    const newItem = initArray.filter((movie: MovieData) => id == movie.imdbID);
-
-    setNewList((prev) => [...prev, ...newItem]);
-
-    const uniqueList = [...new Set([...newList])];
     localStorage.setItem("watchlist", JSON.stringify(uniqueList));
+    console.log(newList);
+    console.log(uniqueList);
+  }, [newList, uniqueList]);
+
+  function handleList(result: MovieData) {
+    setNewList((prev: any) => [...prev, result]);
+    setUniqueList([...new Set([...newList])]);
   }
 
   return (
@@ -153,7 +154,7 @@ export default function BottomComponent({ dataKey }: KeyProps) {
             <MovieComponent
               key={index}
               data={result}
-              handleProps={() => handleList(result.imdbID)}
+              handleProps={() => handleList(result)}
             />
           ))
         )}
