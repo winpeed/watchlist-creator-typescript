@@ -55,7 +55,9 @@ export default function BottomComponent({ dataKey }: KeyProps) {
   const [newList, setNewList] = useState(
     (!ISSERVER && JSON.parse(localStorage.getItem("watchlist")!)) || []
   );
-  const [uniqueList, setUniqueList] = useState<MovieData[]>([]);
+  const [uniqueList, setUniqueList] = useState<MovieData[]>(
+    (!ISSERVER && JSON.parse(localStorage.getItem("watchlist")!)) || []
+  );
 
   async function getMovies() {
     setIsLoading(true);
@@ -106,13 +108,13 @@ export default function BottomComponent({ dataKey }: KeyProps) {
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(uniqueList));
-    console.log(newList);
-    console.log(uniqueList);
+    console.log("newList", newList);
+    console.log("uniqueList", uniqueList);
   }, [newList, uniqueList]);
 
   function handleList(result: MovieData) {
-    setNewList((prev: any) => [...prev, result]);
-    setUniqueList([...new Set([...newList])]);
+    setNewList((prev: any) => [result, ...prev]);
+    setUniqueList([...new Set([result, ...newList])]);
   }
 
   return (
