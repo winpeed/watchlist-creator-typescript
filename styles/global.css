@@ -228,6 +228,7 @@ body {
 
 .category {
   margin: 0em 0.8em;
+  width: 55%;
 }
 
 .first p,
@@ -261,6 +262,7 @@ body {
 
 .card h2 {
   font-size: 1.2rem;
+  width: 71%;
 }
 
 .watchlist-link {
@@ -284,5 +286,10 @@ body {
 
   .category {
     margin: 0em 1em;
+    width: 28%;
+  }
+
+  .duration {
+    width: 10%;
   }
 }/*# sourceMappingURL=global.css.map */

@@ -45,7 +45,7 @@ interface Rating {
   Value: string;
 }
 
-const ISSERVER = typeof window === "undefined";
+const isServer = typeof window === "undefined";
 
 export default function BottomComponent({ dataKey }: KeyProps) {
   const [movies, setMovies] = useState<MovieData[]>([]);
@@ -53,11 +53,12 @@ export default function BottomComponent({ dataKey }: KeyProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allItems, setAllItems] = useState<string[]>(["1", "2", "3"]);
   const [newList, setNewList] = useState(
-    (!ISSERVER && JSON.parse(localStorage.getItem("watchlist")!)) || []
+    (!isServer && JSON.parse(localStorage.getItem("watchlist")!)) || []
   );
   const [uniqueList, setUniqueList] = useState<MovieData[]>(
-    (!ISSERVER && JSON.parse(localStorage.getItem("watchlist")!)) || []
+    (!isServer && JSON.parse(localStorage.getItem("watchlist")!)) || []
   );
+  const [noDataText, setNoDataText] = useState("");
 
   async function getMovies() {
     setIsLoading(true);
@@ -92,9 +93,15 @@ export default function BottomComponent({ dataKey }: KeyProps) {
   async function setAllMovies() {
     try {
       const results = await fetchMovieDetails();
-      Promise.all(results).then((data: MovieData[]) => {
-        setMovies(data);
-      });
+      if (results) {
+        Promise.all(results).then((data: MovieData[]) => {
+          setMovies(data);
+        });
+      } else {
+        setNoDataText(
+          "Unable to find what you’re looking for. Please try another search."
+        );
+      }
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -108,8 +115,8 @@ export default function BottomComponent({ dataKey }: KeyProps) {
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(uniqueList));
-    console.log("newList", newList);
-    console.log("uniqueList", uniqueList);
+    // console.log("newList", newList);
+    // console.log("uniqueList", uniqueList);
   }, [newList, uniqueList]);
 
   function handleList(result: MovieData) {

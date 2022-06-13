@@ -34,7 +34,7 @@ export default function MovieComponent({
       </div>
 
       <div className="second">
-        <p>{Runtime}</p>
+        <p className="duration">{Runtime}</p>
         <p className="category">{Genre}</p>
         <p className="watchlist" onClick={() => handleProps(imdbID)}>
           <Image src="/add-icon.svg" alt="Add Icon" width={20} height={20} />
